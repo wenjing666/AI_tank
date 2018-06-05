@@ -11,17 +11,25 @@ import demo.Team;
 import cmd.Action;
 import cmd.RoundAction;
 
+//1是砖墙 2是钢墙 3是子弹 4是分包 5是我方坦克位置 6敌方坦克位置 7是河 8是超级道具位置
 public class Client {
 	private int team_id = 0;
 	private String team_name = "";
 	private Team self = null;
 	private Team enemy = null;
 	private int roundId = 0;
+	private int[][] Map;
 	private List<Player> players = new ArrayList<Player>();
-
+	private List<BrickWall>BrickWalls=new ArrayList<BrickWall>();
+	private List<IronWall>IronWalls=new ArrayList<IronWall>();
+	private List<Bullet>Bullets=new ArrayList<Bullet>();
+	private List<River>Rivers=new ArrayList<River>();
+	private List<Star>Stars=new ArrayList<Star>();
+	private List<Coin>Coins=new ArrayList<Coin>();
 	public Client(int team_id, String team_name) {
 		this.team_id = team_id;
 		this.team_name = team_name;
+
 	}
 
 	public void legStart(JSONObject data) {
@@ -31,6 +39,7 @@ public class Client {
 
 		int width = map.getInt("width");
 		int height = map.getInt("height");
+		Map=new int[height][width];
 		System.out.printf("map width:%d, map height %d\n", width, height);
 
 		JSONArray teams = data.getJSONArray("teams");
@@ -65,36 +74,39 @@ public class Client {
 		for (int i = 0; i < bullets.size(); i++) {
 			JSONObject object = bullets.getJSONObject(i);
 			Bullet bullet = new Bullet(object);
+			Map[bullet.getY()][bullet.getX()]=3;
 		}
 
 		JSONArray brickWalls = data.getJSONArray("brick_walls");
 		for (int i = 0; i < brickWalls.size(); i++) {
 			JSONObject object = brickWalls.getJSONObject(i);
 			BrickWall wall = new BrickWall(object);
+			Map[wall.getY()][wall.getX()]=1;
 		}
 
 		JSONArray ironWalls = data.getJSONArray("iron_walls");
 		for (int i = 0; i < ironWalls.size(); i++) {
 			JSONObject object = ironWalls.getJSONObject(i);
 			IronWall wall = new IronWall(object);
+			Map[wall.getY()][wall.getX()]=2;
 		}
-
 		JSONArray rivers = data.getJSONArray("river");
 		for (int i = 0; i < rivers.size(); i++) {
 			JSONObject object = rivers.getJSONObject(i);
 			River river = new River(object);
+			Map[river.getY()][river.getX()]=7;
 		}
-
 		JSONArray coins = data.getJSONArray("coins");
 		for (int i = 0; i < coins.size(); i++) {
 			JSONObject object = coins.getJSONObject(i);
 			Coin coin = new Coin(object);
+			Map[coin.getY()][coin.getX()]=4;
 		}
-
 		JSONArray stars = data.getJSONArray("stars");
 		for (int i = 0; i < stars.size(); i++) {
 			JSONObject object = stars.getJSONObject(i);
 			Star star = new Star(object);
+			Map[star.getY()][star.getX()]=8;
 		}
 
 		this.players.clear();
@@ -102,8 +114,12 @@ public class Client {
 		for (int i = 0; i < players.size(); i++) {
 			JSONObject object = players.getJSONObject(i);
 			Player player = new Player(object);
+
 			if (player.getTeam() == this.team_id) {
 				this.players.add(player);
+			}
+			else {
+				Map[player.getY()][player.getX()]=6;
 			}
 		}
 
@@ -118,7 +134,7 @@ public class Client {
 		List<Action> actions = new ArrayList<Action>();
 		for(Player player : this.players)
 		{
-			actions.add(new Action(player.getTeam(), player.getId(), 0, "left", "right"));
+			actions.add(new Action(player.getTeam(), player.getId(), 0, "right", "down"));
 		}
 		
 		RoundAction roundAction = new RoundAction(this.roundId, actions);

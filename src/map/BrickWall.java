@@ -11,4 +11,12 @@ public class BrickWall {
 		this.y = object.getInt("y");
 		System.out.printf("brick wall x %d, y %d\n", this.x, this.y);
 	}
+	public int getX()
+	{
+		return x;
+	}
+	public int getY()
+	{
+		return y;
+	}
 }

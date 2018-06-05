@@ -19,4 +19,25 @@ public class Bullet {
 		System.out.printf("bullet type %d, team %d, x %d, y %d, direction %s\n",
 				this.type, this.team, this.x, this.y, this.direction);
 	}
+	public int getType()
+	{
+		return  type;
+	}
+	public int getTeam()
+	{
+		return  team;
+	}
+	public int getX()
+	{
+		return x;
+	}
+	public int getY()
+	{
+		return y;
+	}
+	public String getDirection()
+	{
+		return direction;
+	}
+
 }
