@@ -1,5 +1,6 @@
 package demo;
 
+import MoveAndFire.Move;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import map.*;
@@ -11,8 +12,10 @@ import demo.Team;
 import cmd.Action;
 import cmd.RoundAction;
 
-//1是砖墙 2是钢墙 3是子弹 4是分包 5是我方坦克位置 6敌方坦克位置 7是河 8是超级道具位置
+//1是砖墙 2是钢墙 3是子弹 4是分包 6敌方坦克位置 7是河 8是超级道具位置
 public class Client {
+	public   int width;
+	public  int height;
 	private int team_id = 0;
 	private String team_name = "";
 	private Team self = null;
@@ -20,12 +23,7 @@ public class Client {
 	private int roundId = 0;
 	private int[][] Map;
 	private List<Player> players = new ArrayList<Player>();
-	private List<BrickWall>BrickWalls=new ArrayList<BrickWall>();
-	private List<IronWall>IronWalls=new ArrayList<IronWall>();
-	private List<Bullet>Bullets=new ArrayList<Bullet>();
-	private List<River>Rivers=new ArrayList<River>();
-	private List<Star>Stars=new ArrayList<Star>();
-	private List<Coin>Coins=new ArrayList<Coin>();
+
 	public Client(int team_id, String team_name) {
 		this.team_id = team_id;
 		this.team_name = team_name;
@@ -37,8 +35,8 @@ public class Client {
 
 		JSONObject map = data.getJSONObject("map");
 
-		int width = map.getInt("width");
-		int height = map.getInt("height");
+		 width = map.getInt("width");
+		height = map.getInt("height");
 		Map=new int[height][width];
 		System.out.printf("map width:%d, map height %d\n", width, height);
 
@@ -131,10 +129,12 @@ public class Client {
 	}
 
 	public RoundAction act() {
+		Move move;
 		List<Action> actions = new ArrayList<Action>();
 		for(Player player : this.players)
 		{
-			actions.add(new Action(player.getTeam(), player.getId(), 0, "right", "down"));
+			move=new Move(player,Map,width,height);
+			actions.add(new Action(player.getTeam(), player.getId(), 0, move.MoveAction(), "down"));
 		}
 		
 		RoundAction roundAction = new RoundAction(this.roundId, actions);
