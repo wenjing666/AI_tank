@@ -11,4 +11,13 @@ public class River {
 		this.y = object.getInt("y");
 		System.out.printf("river x %d, y %d\n", this.x, this.y);
 	}
+	public int getX()
+	{
+		return x;
+	}
+	public int getY()
+	{
+		return y;
+	}
+
 }

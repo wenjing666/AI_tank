@@ -13,4 +13,16 @@ public class Coin {
 		this.point = object.getInt("point");
 		System.out.printf("star x %d, y %d\n point %d\n", this.x, this.y, this.point);
 	}
+	public int getX()
+	{
+		return x;
+	}
+	public int getY()
+	{
+		return y;
+	}
+	public int getPoint()
+	{
+		return point;
+	}
 }
