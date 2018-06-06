@@ -13,6 +13,7 @@ import cmd.RoundAction;
 
 //1是砖墙 2是钢墙 3是子弹 4是分包 6敌方坦克位置 7是河 8是超级道具位置
 public class Client {
+	private Move move;
 	public   int width;
 	public  int height;
 	private int team_id = 0;
@@ -36,7 +37,7 @@ public class Client {
 
 		 width = map.getInt("width");
 		height = map.getInt("height");
-		Map=new int[height][width];
+
 		System.out.printf("map width:%d, map height %d\n", width, height);
 
 		JSONArray teams = data.getJSONArray("teams");
@@ -66,12 +67,14 @@ public class Client {
 	public void round(JSONObject data) {
 		this.roundId = data.getInt("round_id");
 		System.out.printf("round %d\n", this.roundId);
-
+		Map=new int[height][width];
 		JSONArray bullets = data.getJSONArray("bullets");
 		for (int i = 0; i < bullets.size(); i++) {
 			JSONObject object = bullets.getJSONObject(i);
 			Bullet bullet = new Bullet(object);
-			Map[bullet.getY()][bullet.getX()]=3;
+			if(this.team_id!=bullet.getTeam()) {
+				Map[bullet.getY()][bullet.getX()] = 3;
+			}
 		}
 
 		JSONArray brickWalls = data.getJSONArray("brick_walls");
@@ -131,9 +134,9 @@ public class Client {
 		List<Action> actions = new ArrayList<Action>();
 		for(Player player : this.players)
 		{
-			actions.add(new Action(player.getTeam(), player.getId(), 0, dfs(player.getY(),player.getX(),player),"down"));
+			move=new Move(Map,player,width,height);
+			actions.add(move.getMoveAction());
 		}
-		
 		RoundAction roundAction = new RoundAction(this.roundId, actions);
 		return roundAction;
 	}
