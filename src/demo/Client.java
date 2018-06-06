@@ -141,25 +141,4 @@ public class Client {
 		return roundAction;
 	}
 
-	public String dfs(int x,int y,Player player){
-		int []h = new int[]{0,1,0,-1};
-		int []z = new int[]{1,0,-1,0};
-		System.out.println(player.getX()+player.getY());
-		String []move = new String[]{"right","down","left","up"};
-		int j = 0;
-		for(int i =0;i<4;i++){
-		if(Map[player.getY()+h[i]][player.getX()] != 2){
-			j = i;
-			break;
-		}
-		if(Map[player.getY()+h[i]][player.getX()] == 2){
-			j = i+1;
-			System.out.println(x+" "+y);
-			break;
-		}
-		}
-		System.out.println(move[j]);
-		return move[j];
-	}
-
 }
