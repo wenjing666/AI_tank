@@ -1,6 +1,5 @@
 package demo;
 
-import MoveAndFire.Move;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import map.*;
@@ -129,16 +128,35 @@ public class Client {
 	}
 
 	public RoundAction act() {
-		Move move;
 		List<Action> actions = new ArrayList<Action>();
 		for(Player player : this.players)
 		{
-			move=new Move(player,Map,width,height);
-			actions.add(new Action(player.getTeam(), player.getId(), 0, move.MoveAction(), "down"));
+			actions.add(new Action(player.getTeam(), player.getId(), 0, dfs(player.getY(),player.getX(),player),"down"));
 		}
 		
 		RoundAction roundAction = new RoundAction(this.roundId, actions);
 		return roundAction;
+	}
+
+	public String dfs(int x,int y,Player player){
+		int []h = new int[]{0,1,0,-1};
+		int []z = new int[]{1,0,-1,0};
+		System.out.println(player.getX()+player.getY());
+		String []move = new String[]{"right","down","left","up"};
+		int j = 0;
+		for(int i =0;i<4;i++){
+		if(Map[player.getY()+h[i]][player.getX()] != 2){
+			j = i;
+			break;
+		}
+		if(Map[player.getY()+h[i]][player.getX()] == 2){
+			j = i+1;
+			System.out.println(x+" "+y);
+			break;
+		}
+		}
+		System.out.println(move[j]);
+		return move[j];
 	}
 
 }
