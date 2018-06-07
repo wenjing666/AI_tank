@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 Class-Path: commons-lang-2.4.jar commons-collections-3.2.jar json.jar 
  json-lib-2.4-jdk15.jar commons-beanutils-1.8.0.jar demo.jar commons-l
  ogging-1.1.1.jar ezmorph-1.0.6.jar
-Main-Class: 
+Main-Class: demo.Demo
 
