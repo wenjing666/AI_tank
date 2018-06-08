@@ -11,7 +11,7 @@ import demo.Team;
 import cmd.Action;
 import cmd.RoundAction;
 
-//1是砖墙 2是钢墙 3是子弹 4是分包 6敌方坦克位置 7是河 8是超级道具位置
+//1是砖墙 2是钢墙 3是子弹 4是分包 5右方 6敌方坦克位置 7是河 8是超级道具位置
 public class Client {
 	private Move move;
 	public   int width;
@@ -117,6 +117,7 @@ public class Client {
 
 			if (player.getTeam() == this.team_id) {
 				this.players.add(player);
+				Map[player.getY()][player.getX()]=5;
 			}
 			else {
 				Map[player.getY()][player.getX()]=6;
